@@ -32,6 +32,7 @@ export interface SharedData {
 
 export interface User {
     id: string;
+    username: string;
     company_id: string;
     first_name: string;
     middle_name?: string;
