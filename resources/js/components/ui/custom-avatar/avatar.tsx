@@ -9,13 +9,14 @@ interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
     src: string;
     width?: number;
     height?: number;
-    children?: React.ReactNode;
+    name?: string;
 }
 
-export default function Avatar({ src, alt, children, className, width = 32, height = 32, ...props }: AvatarProps) {
+export default function Avatar({ src, alt, name, className, width = 32, height = 32, ...props }: AvatarProps) {
     let fallback = '';
-    if (children && typeof children === 'string') {
-        const splittedString = children.split(' ');
+
+    if (name) {
+        const splittedString = name.split(' ');
         fallback = `${splittedString.at(0)?.charAt(0)}${splittedString.at(-1)?.charAt(0)}`;
     } else {
         fallback = `${alt.charAt(0)}${alt.charAt(alt.length - 1)}`;
