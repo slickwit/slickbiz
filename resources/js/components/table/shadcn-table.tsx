@@ -11,7 +11,13 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
-    return <thead data-slot="table-header" className={cn('[&_tr]:border-b', className)} {...props} />;
+    return (
+        <thead
+            data-slot="table-header"
+            className={cn('bg-accent font-medium text-muted-foreground dark:bg-accent/10 [&_tr]:border-b', className)}
+            {...props}
+        />
+    );
 }
 
 const TableHeaderRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => (
@@ -31,7 +37,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
     return (
         <tr
             data-slot="table-row"
-            className={cn('border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted', className)}
+            className={cn('border-b border-dashed border-input transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted', className)}
             {...props}
         />
     );
@@ -42,7 +48,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
         <th
             data-slot="table-head"
             className={cn(
-                'h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+                'h-14 px-4 text-left align-middle font-medium whitespace-nowrap text-foreground transition-all group-data-[dense=md]:h-12 group-data-[dense=sm]:h-11 group-data-[dense=sm]:px-2.5 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
                 className,
             )}
             {...props}
@@ -54,7 +60,10 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
     return (
         <td
             data-slot="table-cell"
-            className={cn('p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]', className)}
+            className={cn(
+                'p-4 align-middle whitespace-nowrap transition-all group-data-[dense=md]:py-2 group-data-[dense=sm]:px-2.5 group-data-[dense=sm]:py-1 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+                className,
+            )}
             {...props}
         />
     );

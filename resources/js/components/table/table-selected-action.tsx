@@ -32,13 +32,17 @@ export default function TableSelectedAction<T extends Record<string, any>>({ act
     };
 
     return (
-        <thead className={cn('absolute top-0 left-0 z-30 h-12 w-full')}>
-            <tr className="flex h-full w-full items-center bg-primary px-4 transition-all group-data-[dense=sm]:px-2.5">
-                <th className="flex w-full items-center justify-between" colSpan={columnLength}>
+        <thead className={cn('absolute top-0 left-0 z-30 w-full')}>
+            <tr className="flex h-full w-full items-center bg-primary">
+                <th
+                    className="flex h-14 w-full items-center justify-between px-4 text-left align-middle font-medium whitespace-nowrap text-foreground transition-all group-data-[dense=md]:h-12 group-data-[dense=sm]:h-11 group-data-[dense=sm]:px-2.5 [&>[role=checkbox]]:translate-y-[2px]"
+                    colSpan={columnLength}
+                >
                     <div className="flex items-center gap-4">
                         <Checkbox
+                            variant="primary"
+                            className="data-[state=checked]:border-input data-[state=indeterminate]:border-input"
                             checked={isAllRowsSelected || 'indeterminate'}
-                            // variant="primary"
                             onCheckedChange={handleSelect}
                         />
 

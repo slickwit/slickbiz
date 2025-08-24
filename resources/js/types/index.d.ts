@@ -1,6 +1,8 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
+export type TClassName = HTMLProps<HTMLElement>['className'];
+
 export interface Auth {
     user: User;
 }

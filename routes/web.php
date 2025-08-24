@@ -7,14 +7,14 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get('/customers', function () {
-    return Inertia::render('customers/page');
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+    Route::get('/customers', function () {
+        return Inertia::render('customers/page');
+    })->name("customer");
 });
 
 require __DIR__.'/settings.php';

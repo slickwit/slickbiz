@@ -56,7 +56,7 @@ const FloatingLabelButon = React.forwardRef<HTMLButtonElement, FloatingLabelButo
                 <span
                     ref={labelRef}
                     className={cn(
-                        'absolute flex-shrink-0 flex-grow text-muted-foreground transition-all group-data-[value=true]:top-2 group-data-[value=true]:-translate-y-4 group-data-[value=true]:text-xs',
+                        'absolute flex-shrink-0 flex-grow text-sm font-medium text-muted-foreground transition-all group-data-[value=true]:top-2 group-data-[value=true]:-translate-y-4 group-data-[value=true]:text-xs',
                         {
                             'translate-x-7 group-data-[value=true]:-translate-x-1': !!startIcon,
                         },
@@ -70,7 +70,7 @@ const FloatingLabelButon = React.forwardRef<HTMLButtonElement, FloatingLabelButo
                     className={cn(
                         'pointer-events-none absolute inset-0 -top-[5px] m-0 min-w-0 rounded-md border border-input px-2 py-0 text-left transition-all group-focus:border-2 group-focus:border-primary group-focus-visible:border-2 group-focus-visible:border-primary dark:border-input/35 group-focus:[&>legend]:max-w-full group-focus-visible:[&>legend]:max-w-full group-data-[value=false]:[&>legend]:max-w-0',
                         {
-                            'text-error border-error': !!error,
+                            'border-error text-error': !!error,
                         },
                     )}
                 >

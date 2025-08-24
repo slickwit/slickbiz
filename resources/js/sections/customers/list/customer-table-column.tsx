@@ -27,7 +27,7 @@ export function useCustomerColumnDef(): ColumnDef<User>[] {
                     const allPageRowsSelected = table.getIsAllPageRowsSelected();
                     return (
                         <Checkbox
-                            // variant="primary"
+                            variant="primary"
                             checked={allPageRowsSelected && 'indeterminate'}
                             onCheckedChange={(value) => {
                                 if (allPageRowsSelected) {
@@ -42,7 +42,7 @@ export function useCustomerColumnDef(): ColumnDef<User>[] {
                 },
                 cell: ({ row }) => (
                     <Checkbox
-                        // variant="primary"
+                        variant="primary"
                         checked={row.getIsSelected()}
                         onCheckedChange={(value) => row.toggleSelected(!!value)}
                         aria-label="Select row"

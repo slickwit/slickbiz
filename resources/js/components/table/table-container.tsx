@@ -1,20 +1,20 @@
-import { type HTMLAttributes } from "react";
-import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/utils";
-import type { DensityState } from "@/types/tables";
+import { cn } from '@/lib/utils';
+import { type HTMLAttributes } from 'react';
+import { Card, CardContent } from '../ui/card';
+import type { DensityState } from './features/density';
 
 // ----------------------------------------------------------------------
 
 interface TableContainerProps extends HTMLAttributes<HTMLDivElement> {
-	dense: DensityState;
+    dense: DensityState;
 }
 
 export default function TableContainer({ children, className, dense }: TableContainerProps) {
-	return (
-		<Card className={className}>
-			<CardContent data-dense={dense} className={cn("p-0 group [&_th]:font-medium")}>
-				{children}
-			</CardContent>
-		</Card>
-	);
+    return (
+        <Card className={cn('py-0', className)}>
+            <CardContent data-dense={dense} className={cn('group p-0 [&_th]:font-medium')}>
+                {children}
+            </CardContent>
+        </Card>
+    );
 }

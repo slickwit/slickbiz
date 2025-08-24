@@ -18,6 +18,8 @@ import { flexRender } from '@tanstack/react-table';
 import { Trash2Icon } from 'lucide-react';
 import { useCustomerColumnDef } from './customer-table-column';
 import CustomerTableRow from './customer-table-row';
+import CustomerTableTab from './customer-table-tab';
+import CustomerTableToolbar from './customer-table-toolbar';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +29,7 @@ interface CustomerListViewProps {
 
 export default function CustomerListView({ users }: CustomerListViewProps) {
     const columns = useCustomerColumnDef();
-    const { table, rows, density } = useTable({
+    const { table, rows, density, canHideColumns } = useTable({
         data: users,
         columns,
     });
@@ -35,9 +37,9 @@ export default function CustomerListView({ users }: CustomerListViewProps) {
     const isFiltered = false;
     return (
         <TableContainer dense={density}>
-            {/* <UserTableTabs data={users} canHideColumns={canHideColumns} />
+            <CustomerTableTab data={users} canHideColumns={canHideColumns} />
 
-            <UserTableToolbar table={table} canHideColumns={canHideColumns} onSearchRole={handleFilterRoleChange} roles={roles} /> */}
+            <CustomerTableToolbar canHideColumns={canHideColumns} />
 
             {/* {isFiltered && (
                 <UserFilterResult
@@ -57,19 +59,16 @@ export default function CustomerListView({ users }: CustomerListViewProps) {
                         columnLength={columns.length}
                         action={
                             <IconButton size="sm" className="text-primary-foreground">
-                                <Trash2Icon className="text-error size-5" />
+                                <Trash2Icon className="size-5" />
                             </IconButton>
                         }
                     />
-                    <TableHeader className="bg-accent dark:bg-accent/10">
+                    <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableHeaderRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead
-                                            className="p-4 transition-all group-data-[dense=md]:py-2 group-data-[dense=sm]:px-2.5 group-data-[dense=sm]:py-1"
-                                            key={header.id}
-                                        >
+                                        <TableHead key={header.id}>
                                             {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                         </TableHead>
                                     );
