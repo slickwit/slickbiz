@@ -99,7 +99,6 @@ export const CustomScrollableTabs = <TOptions extends TOption[]>({
         }
     };
 
-    // Handle scroll events to update button visibility
     const handleScroll = () => {
         if (ref.current) {
             handleBtnVisibility(ref.current.scrollLeft, parentWidth);
@@ -107,7 +106,7 @@ export const CustomScrollableTabs = <TOptions extends TOption[]>({
     };
 
     return (
-        <div ref={containerRef} className={cn('relative z-20 flex items-center overflow-hidden bg-card', className)}>
+        <div ref={containerRef} className={cn('relative z-40 flex h-10 items-center overflow-x-hidden bg-card', className)}>
             <AnimatePresence>
                 {showLeftBtn && (
                     <motion.button
@@ -125,16 +124,16 @@ export const CustomScrollableTabs = <TOptions extends TOption[]>({
 
             <Tabs
                 ref={ref}
-                className="scrollbar-none flex items-center overflow-x-auto scroll-smooth transition-all"
+                className="scrollbar-none z-40 h-full flex-row items-center overflow-x-auto scroll-smooth transition-all"
                 value={value}
                 onValueChange={onChange ? handleChange : undefined}
                 onScroll={handleScroll}
             >
-                <TabsList {...tabListProps} className={cn('h-full space-x-4 bg-transparent p-0', tabListProps?.className)}>
+                <TabsList {...tabListProps} className={cn('flex h-full space-x-4 bg-transparent p-0', tabListProps?.className)}>
                     {options.map(({ triggerChild = false, props = {}, ...option }) => {
                         return (
                             <TabsTrigger
-                                className="relative h-12 cursor-pointer space-x-2 px-1 before:absolute before:bottom-0 before:h-[0.1rem] before:w-0 before:bg-common before:transition-all before:duration-150 before:content-[''] data-[state=active]:bg-transparent data-[state=active]:text-common data-[state=active]:shadow-none data-[state=active]:before:w-full"
+                                className="relative cursor-pointer space-x-2 px-1 before:absolute before:-bottom-0.5 before:h-[3px] before:w-0 before:rounded-lg before:bg-common before:transition-all before:duration-350 before:content-[''] data-[state=active]:bg-transparent data-[state=active]:text-common data-[state=active]:shadow-none data-[state=active]:before:z-50 data-[state=active]:before:w-full"
                                 {...props}
                                 key={option.value}
                                 value={option.value}

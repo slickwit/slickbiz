@@ -117,7 +117,7 @@ export default function CustomerTableTab({ canHideColumns, data }: CustomerTable
     ];
 
     return (
-        <div className="border-opacity-15 flex w-full items-center justify-between border-b-2 px-4">
+        <div className="flex w-full items-center justify-between border-b border-input px-4">
             <ScrollableTabs className="w-full" value={searchValue} onChange={handleFilterStatusChange} options={STATUS_OPTIONS} />
             <div>
                 <DropdownMenu>
