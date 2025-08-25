@@ -1,19 +1,21 @@
 import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
+// import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { useNavData } from '@/layouts/dashboard/configs/navigations';
+import NavVerticalContent from '@/layouts/dashboard/vertical/nav-vertical-content';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+// const mainNavItems: NavItem[] = [
+//     {
+//         title: 'Dashboard',
+//         href: '/dashboard',
+//         icon: LayoutGrid,
+//     },
+// ];
 
 const footerNavItems: NavItem[] = [
     {
@@ -29,8 +31,9 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const navData = useNavData();
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="sidebar">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -44,7 +47,8 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                {/* <NavMain items={mainNavItems} /> */}
+                <NavVerticalContent navData={navData} />
             </SidebarContent>
 
             <SidebarFooter>

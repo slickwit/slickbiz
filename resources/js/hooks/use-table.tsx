@@ -45,7 +45,7 @@ interface UseTableReturn<TData> {
 }
 
 export function useTable<TData>({ data, columns, initialState = {} }: UseTableOptions<TData>): UseTableReturn<TData> {
-    const [density, setDensity] = useState<DensityState>('lg');
+    const [density, setDensity] = useState<DensityState>('md');
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
