@@ -1,3 +1,5 @@
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import Container from '@/components/ui/container';
 import AppLayout from '@/layouts/app-layout';
 import CustomerListView from '@/sections/customers/list/customer-list';
 import { type BreadcrumbItem } from '@/types';
@@ -83,7 +85,13 @@ export default function Customers() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Customers" />
-            <CustomerListView users={dummyUsers} />
+            <Container className="mt-16">
+                <div className="mb-8 lg:mb-12">
+                    <h4 className="text-md mb-2 font-bold text-slate-800 lg:text-lg xl:text-2xl dark:text-slate-200">List</h4>
+                    <Breadcrumbs breadcrumbs={breadcrumbs} />
+                </div>
+                <CustomerListView users={dummyUsers} />
+            </Container>
         </AppLayout>
     );
 }

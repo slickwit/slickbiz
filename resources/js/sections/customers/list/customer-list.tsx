@@ -24,20 +24,20 @@ import CustomerTableToolbar from './customer-table-toolbar';
 // ----------------------------------------------------------------------
 
 interface CustomerListViewProps {
-    users: User[];
+    customers: User[];
 }
 
-export default function CustomerListView({ users }: CustomerListViewProps) {
+export default function CustomerListView({ customers }: CustomerListViewProps) {
     const columns = useCustomerColumnDef();
     const { table, rows, density, canHideColumns } = useTable({
-        data: users,
+        data: customers,
         columns,
     });
 
     const isFiltered = false;
     return (
         <TableContainer dense={density}>
-            <CustomerTableTab data={users} canHideColumns={canHideColumns} />
+            <CustomerTableTab data={customers} canHideColumns={canHideColumns} />
 
             <CustomerTableToolbar canHideColumns={canHideColumns} />
 
