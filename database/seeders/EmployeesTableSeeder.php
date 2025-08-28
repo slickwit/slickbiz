@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class EmployeesTableSeeder extends Seeder
 {
@@ -21,7 +20,6 @@ class EmployeesTableSeeder extends Seeder
         
         foreach ($employees as $index => $employee) {
             DB::table('employees')->insert([
-                'id' => Str::uuid(),
                 'user_id' => $employee->id,
                 'identification' => 'EMP' . str_pad($index + 1, 4, '0', STR_PAD_LEFT),
                 'position' => $positions[$index % count($positions)],

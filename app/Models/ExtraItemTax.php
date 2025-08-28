@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class ExtraItemTax extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+
+class ExtraItemTax extends Model
 {
     //
 }

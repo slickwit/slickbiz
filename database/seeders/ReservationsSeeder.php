@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class ReservationsSeeder extends Seeder
@@ -51,13 +50,13 @@ class ReservationsSeeder extends Seeder
             $status = $statuses[array_rand($statuses)];
             $source = $sources[array_rand($sources)];
 
-            $reservationId = Str::uuid();
             $reservationNumber = 'RES-' . date('Ymd') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT);
 
             // Calculate price (simplified for seeder)
             $basePrice = $this->calculateSamplePrice($service, $durationHours, $guestsCount, $unitsReserved);
             $taxAmount = $basePrice * 0.1; // Simple 10% tax
             $totalPrice = $basePrice + $taxAmount;
+            $reservationId = $i + 1;
 
             $reservations[] = [
                 'id' => $reservationId,
@@ -101,7 +100,6 @@ class ReservationsSeeder extends Seeder
                     $totalExtraPrice = $unitPrice * $quantity;
                     
                     $reservationExtras[] = [
-                        'id' => Str::uuid(),
                         'reservation_id' => $reservationId,
                         'extras_item_id' => $extra->id,
                         'quantity' => $quantity,

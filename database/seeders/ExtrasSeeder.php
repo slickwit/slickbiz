@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ExtrasSeeder extends Seeder
 {
@@ -12,7 +11,6 @@ class ExtrasSeeder extends Seeder
     {
         // Create extras groups
         $amenitiesGroup = DB::table('extras_groups')->insertGetId([
-            'id' => Str::uuid(),
             'name' => 'Amenities',
             'slug' => 'amenities',
             'description' => 'Additional amenities for your stay',
@@ -22,7 +20,6 @@ class ExtrasSeeder extends Seeder
         ]);
 
         $servicesGroup = DB::table('extras_groups')->insertGetId([
-            'id' => Str::uuid(),
             'name' => 'Additional Services',
             'slug' => 'additional-services',
             'description' => 'Extra services to enhance your experience',
@@ -34,7 +31,6 @@ class ExtrasSeeder extends Seeder
         // Create extras items
         $extrasItems = [
             [
-                'id' => Str::uuid(),
                 'extras_group_id' => $amenitiesGroup,
                 'name' => 'Breakfast Package',
                 'description' => 'Daily breakfast for all guests',
@@ -46,7 +42,6 @@ class ExtrasSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => Str::uuid(),
                 'extras_group_id' => $amenitiesGroup,
                 'name' => 'Airport Transfer',
                 'description' => 'Round-trip airport transportation',
@@ -58,7 +53,6 @@ class ExtrasSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => Str::uuid(),
                 'extras_group_id' => $servicesGroup,
                 'name' => 'Equipment Rental',
                 'description' => 'Professional equipment rental',

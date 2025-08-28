@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pricing_models', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
             $table->string('name'); // Per Hour, Per Day, Per Person, Fixed Rate
             $table->string('calculation_type'); // time_based, person_based, fixed
             $table->string('unit'); // hour, day, person, service

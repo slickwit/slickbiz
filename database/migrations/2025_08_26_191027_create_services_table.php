@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
             $table->string('name');
+            $table->string('slug');
             $table->string('type'); // studio, room, equipment, appointment, table, etc.
             $table->text('description')->nullable();
             $table->integer('max_capacity');
-            $table->json('images')->nullable();
             $table->json('features')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

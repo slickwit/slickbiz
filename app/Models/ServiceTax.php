@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class ServiceTax extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+
+class ServiceTax extends Model
 {
     //
 }

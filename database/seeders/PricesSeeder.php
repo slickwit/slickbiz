@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class PricesSeeder extends Seeder
 {
@@ -24,7 +23,6 @@ class PricesSeeder extends Seeder
         $prices = [
             // Recording Studio - Hourly
             [
-                'id' => Str::uuid(),
                 'service_id' => $recordingStudio->id,
                 'pricing_model_id' => $hourlyModel->id,
                 'amount' => 80.00,
@@ -40,7 +38,6 @@ class PricesSeeder extends Seeder
             ],
             // Recording Studio - Daily
             [
-                'id' => Str::uuid(),
                 'service_id' => $recordingStudio->id,
                 'pricing_model_id' => $dailyModel->id,
                 'amount' => 500.00,
@@ -56,7 +53,6 @@ class PricesSeeder extends Seeder
             ],
             // Photo Studio - Hourly
             [
-                'id' => Str::uuid(),
                 'service_id' => $photoStudio->id,
                 'pricing_model_id' => $hourlyModel->id,
                 'amount' => 60.00,
@@ -72,7 +68,6 @@ class PricesSeeder extends Seeder
             ],
             // Photo Studio - Per Person
             [
-                'id' => Str::uuid(),
                 'service_id' => $photoStudio->id,
                 'pricing_model_id' => $personModel->id,
                 'amount' => 10.00, // $10 per additional person
@@ -88,7 +83,6 @@ class PricesSeeder extends Seeder
             ],
             // Conference Room - Fixed Rate
             [
-                'id' => Str::uuid(),
                 'service_id' => $conferenceRoom->id,
                 'pricing_model_id' => $fixedModel->id,
                 'amount' => 200.00,

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extra_item_taxes', function (Blueprint $table) {
-            $table->foreignUuid('extras_item_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('tax_id')->constrained()->onDelete('cascade');
+            $table->foreignId('extras_item_id')->constrained()->onDelete('cascade');
+            $table->foreignId('tax_id')->constrained()->onDelete('cascade');
             $table->primary(['extras_item_id', 'tax_id']);
         });
     }

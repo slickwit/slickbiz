@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extras_items', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('extras_group_id')->constrained()->onDelete('cascade');
+            $table->bigIncrements('id');
+            $table->foreignId('extras_group_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,7 +12,6 @@ class UsersTableSeeder extends Seeder
     {
         // Create super admin
         DB::table('users')->insert([
-            'id' => Str::uuid(),
             'email' => 'admin@email.com',
             'password' => Hash::make('123123'),
             'role' => 'super_admin',
@@ -22,7 +20,6 @@ class UsersTableSeeder extends Seeder
             'updated_at' => now(),
         ]);
         DB::table('users')->insert([
-            'id' => Str::uuid(),
             'email' => 'admin@reservation.com',
             'password' => Hash::make('password'),
             'role' => 'super_admin',
@@ -33,7 +30,6 @@ class UsersTableSeeder extends Seeder
 
         // Create regular admin
         DB::table('users')->insert([
-            'id' => Str::uuid(),
             'email' => 'regular.admin@example.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
@@ -43,9 +39,8 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // Create sample employees
-        for ($i = 1; $i <= 48; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             DB::table('users')->insert([
-                'id' => Str::uuid(),
                 'email' => "employee{$i}@example.com",
                 'password' => Hash::make('password'),
                 'role' => 'employees',
@@ -58,7 +53,6 @@ class UsersTableSeeder extends Seeder
         // Create sample customers
         for ($i = 1; $i <= 67; $i++) {
             DB::table('users')->insert([
-                'id' => Str::uuid(),
                 'email' => "customer{$i}@example.com",
                 'password' => Hash::make('password'),
                 'role' => 'customer',

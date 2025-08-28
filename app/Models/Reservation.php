@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Reservation extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+
+class Reservation extends Model
 {
     protected $guarded = [];
 

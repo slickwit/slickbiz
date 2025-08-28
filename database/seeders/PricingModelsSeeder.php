@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class PricingModelsSeeder extends Seeder
 {
@@ -12,7 +11,6 @@ class PricingModelsSeeder extends Seeder
     {
         $models = [
             [
-                'id' => Str::uuid(),
                 'name' => 'Per Hour',
                 'calculation_type' => 'time_based',
                 'unit' => 'hour',
@@ -21,7 +19,6 @@ class PricingModelsSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => Str::uuid(),
                 'name' => 'Per Day',
                 'calculation_type' => 'time_based',
                 'unit' => 'day',
@@ -30,7 +27,6 @@ class PricingModelsSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => Str::uuid(),
                 'name' => 'Per Person',
                 'calculation_type' => 'person_based',
                 'unit' => 'person',
@@ -39,7 +35,6 @@ class PricingModelsSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => Str::uuid(),
                 'name' => 'Fixed Rate',
                 'calculation_type' => 'fixed',
                 'unit' => 'service',

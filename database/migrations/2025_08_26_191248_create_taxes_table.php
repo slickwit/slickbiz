@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('taxes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
             $table->string('name'); // VAT, Sales Tax, City Tax
             $table->decimal('rate', 5, 2); // 10.00 for 10%
             $table->string('type')->default('percentage'); // percentage or fixed

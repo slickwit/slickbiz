@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_extras', function (Blueprint $table) {
-            $table->foreignUuid('service_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('extras_group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('extras_group_id')->constrained()->onDelete('cascade');
             $table->primary(['service_id', 'extras_group_id']);
             $table->timestamps();
         });

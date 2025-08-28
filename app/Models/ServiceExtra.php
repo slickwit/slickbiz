@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class ServiceExtra extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+
+class ServiceExtra extends Model
 {
     //
 }

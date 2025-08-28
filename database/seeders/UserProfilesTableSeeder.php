@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class UserProfilesTableSeeder extends Seeder
 {
@@ -17,7 +16,6 @@ class UserProfilesTableSeeder extends Seeder
         
         foreach ($users as $user) {
             DB::table('user_profiles')->insert([
-                'id' => Str::uuid(),
                 'user_id' => $user->id,
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,

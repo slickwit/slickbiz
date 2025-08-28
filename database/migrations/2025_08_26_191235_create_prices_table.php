@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prices', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('service_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('pricing_model_id')->constrained()->onDelete('cascade');
+            $table->bigIncrements('id');
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('pricing_model_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2); // base price
             $table->decimal('min_amount', 10, 2)->nullable(); // minimum charge
             $table->decimal('max_amount', 10, 2)->nullable(); // maximum charge
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('valid_until')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
             
             $table->unique(['service_id', 'pricing_model_id', 'valid_from'], 'price_unique_index');
         });

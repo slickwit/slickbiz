@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
             $table->string('reservation_number')->unique();
             
             // Relationships
-            $table->foreignUuid('customer_id')->constrained('users')->onDelete('cascade');
-            $table->foreignUuid('service_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('assigned_employee_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('assigned_employee_id')->nullable()->constrained('users')->onDelete('set null');
             
             // Timing
             $table->timestamp('start_datetime');

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_tax', function (Blueprint $table) {
-            $table->foreignUuid('service_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('tax_id')->constrained()->onDelete('cascade');
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('tax_id')->constrained()->onDelete('cascade');
             $table->primary(['service_id', 'tax_id']);
         });
     }
