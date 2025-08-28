@@ -39,11 +39,11 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // Create sample employees
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 24; $i++) {
             DB::table('users')->insert([
                 'email' => "employee{$i}@example.com",
                 'password' => Hash::make('password'),
-                'role' => 'employees',
+                'role' => 'employee',
                 'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
         }
 
         // Create sample customers
-        for ($i = 1; $i <= 67; $i++) {
+        for ($i = 1; $i <= 82; $i++) {
             DB::table('users')->insert([
                 'email' => "customer{$i}@example.com",
                 'password' => Hash::make('password'),

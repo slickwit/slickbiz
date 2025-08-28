@@ -18,7 +18,7 @@ return new class extends Migration
             // Relationships
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
-            $table->foreignId('assigned_employee_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             
             // Timing
             $table->timestamp('start_datetime');
@@ -39,6 +39,30 @@ return new class extends Migration
             $table->text('internal_notes')->nullable(); // text field for staff only
             
             // Financials (calculated at booking time)
+            $table->foreignId('price_id')->nullable()->constrained()->onDelete('set null');
+            $table->json('applied_taxes')->nullable();
+            // applied_taxes
+            // {
+            // "taxes": [
+            //     {
+            //     "tax_id": 1,
+            //     "name": "VAT",
+            //     "rate": 10.00,
+            //     "type": "percentage",
+            //     "is_compound": false,
+            //     "amount": 15.00
+            //     },
+            //     {
+            //     "tax_id": 2,
+            //     "name": "City Tax",
+            //     "rate": 5.00,
+            //     "type": "fixed",
+            //     "is_compound": false,
+            //     "amount": 5.00
+            //     }
+            // ],
+            // "total_tax_amount": 20.00
+            // }
             $table->decimal('base_price', 10, 2)->default(0);
             $table->decimal('tax_amount', 10, 2)->default(0);
             $table->decimal('total_price', 10, 2)->default(0);

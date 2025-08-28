@@ -13,7 +13,7 @@ class EmployeesTableSeeder extends Seeder
         
         // Get employee users and first business
         $employees = DB::table('users')
-            ->where('role', 'employees')
+            ->where('role', 'employee')
             ->get();
         
         $positions = ['Manager', 'Receptionist', 'Service Provider', 'Support Staff', 'Coordinator'];

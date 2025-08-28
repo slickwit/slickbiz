@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ExtrasGroup extends Model
+class Category extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -18,8 +17,8 @@ class ExtrasGroup extends Model
         'name',
         'slug',
         'description',
-        'is_active',
         'sort_order',
+        'is_active',
     ];
 
     protected $casts = [
@@ -32,13 +31,8 @@ class ExtrasGroup extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function items(): HasMany
+    public function services(): HasMany
     {
-        return $this->hasMany(ExtrasItem::class);
-    }
-
-    public function services(): BelongsToMany
-    {
-        return $this->belongsToMany(Service::class, 'service_extras');
+        return $this->hasMany(Service::class);
     }
 }

@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ExtrasItem extends Model
 {
-    use SoftDeletes;
-    
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
+        'user_id',
         'extras_group_id',
         'name',
         'description',
@@ -24,7 +27,14 @@ class ExtrasItem extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'is_active' => 'boolean',
     ];
+
+    // Relationships
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function group(): BelongsTo
     {
@@ -36,10 +46,8 @@ class ExtrasItem extends Model
         return $this->belongsToMany(Tax::class, 'extras_item_taxes');
     }
 
-    public function reservations(): BelongsToMany
+    public function reservationExtras(): HasMany
     {
-        return $this->belongsToMany(Reservation::class, 'reservation_extras')
-            ->withPivot('quantity', 'unit_price', 'total_price', 'price_breakdown')
-            ->withTimestamps();
+        return $this->hasMany(ReservationExtra::class);
     }
 }

@@ -2,19 +2,39 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ReservationExtra extends Model
 {
-    use SoftDeletes;
+    use HasFactory;
 
+    protected $fillable = [
+        'reservation_id',
+        'extras_item_id',
+        'applied_taxes',
+        'quantity',
+        'unit_price',
+        'total_price',
+        'price_breakdown',
+    ];
 
-    public function extras(): BelongsToMany
+    protected $casts = [
+        'applied_taxes' => 'array',
+        'unit_price' => 'decimal:2',
+        'total_price' => 'decimal:2',
+        'price_breakdown' => 'array',
+    ];
+
+    // Relationships
+    public function reservation(): BelongsTo
     {
-        return $this->belongsToMany(ExtrasItem::class, 'reservation_extras')
-            ->withPivot('quantity', 'unit_price', 'total_price', 'price_breakdown')
-            ->withTimestamps();
+        return $this->belongsTo(Reservation::class);
+    }
+
+    public function extrasItem(): BelongsTo
+    {
+        return $this->belongsTo(ExtrasItem::class);
     }
 }

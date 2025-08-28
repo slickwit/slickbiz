@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('extras_items', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('extras_group_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();

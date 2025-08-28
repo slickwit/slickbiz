@@ -10,42 +10,44 @@ class ServicesSeeder extends Seeder
 {
     public function run()
     {
+        // Get a user to associate with
+        $user = DB::table('users')->first();
+        $studioCategory = DB::table('categories')->where('slug', 'studios')->first();
+        $roomCategory = DB::table('categories')->where('slug', 'meeting-rooms')->first();
+
         $services = [
             [
+                'user_id' => $user->id,
+                'category_id' => $studioCategory->id ?? null,
                 'name' => 'Recording Studio A',
-                'slug' => Str::slug('Recording Studio A'),
-                'type' => 'studio',
+                'slug' => 'recording-studio-a',
                 'description' => 'Professional recording studio with state-of-the-art equipment',
                 'max_capacity' => 5,
-                'features' => json_encode([
-                    'sound_proofing', 'mixing_board', 'instruments', 'vocal_booth'
-                ]),
+                'features' => json_encode(['sound_proofing', 'mixing_board', 'instruments', 'vocal_booth']),
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
+                'user_id' => $user->id,
+                'category_id' => $studioCategory->id ?? null,
                 'name' => 'Photo Studio B',
-                'slug' => Str::slug('Photo Studio B'),
-                'type' => 'studio',
+                'slug' => 'photo-studio-b',
                 'description' => 'Spacious photo studio with natural lighting options',
                 'max_capacity' => 8,
-                'features' => json_encode([
-                    'natural_light', 'backdrops', 'lighting_equipment', 'changing_room'
-                ]),
+                'features' => json_encode(['natural_light', 'backdrops', 'lighting_equipment', 'changing_room']),
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
+                'user_id' => $user->id,
+                'category_id' => $roomCategory->id ?? null,
                 'name' => 'Conference Room C',
-                'slug' => Str::slug('Conference Room C'),
-                'type' => 'room',
+                'slug' => 'conference-room-c',
                 'description' => 'Professional meeting space for business presentations',
                 'max_capacity' => 12,
-                'features' => json_encode([
-                    'projector', 'whiteboard', 'wifi', 'video_conferencing'
-                ]),
+                'features' => json_encode(['projector', 'whiteboard', 'wifi', 'video_conferencing']),
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),

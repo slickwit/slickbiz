@@ -2,45 +2,45 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Price extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'service_id',
-        'pricing_model_id',
+        'name',
         'amount',
-        'min_amount',
-        'max_amount',
-        'min_quantity',
-        'max_quantity',
-        'valid_from',
-        'valid_until',
+        'type',
+        'is_default',
         'is_active',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'min_amount' => 'decimal:2',
-        'max_amount' => 'decimal:2',
-        'min_quantity' => 'integer',
-        'max_quantity' => 'integer',
-        'valid_from' => 'datetime',
-        'valid_until' => 'datetime',
+        'is_default' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    // Relationships
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
 
-    public function pricingModel(): BelongsTo
+    public function reservations(): HasMany
     {
-        return $this->belongsTo(PricingModel::class);
+        return $this->hasMany(Reservation::class);
     }
 }

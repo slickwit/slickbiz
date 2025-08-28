@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,12 +22,13 @@ class DatabaseSeeder extends Seeder
 
         // Services-Based Reservation System Seeder
         $services = [
-            PricingModelsSeeder::class,
+            CategoriesSeeder::class,
             TaxesSeeder::class,
             ServicesSeeder::class,
             PricesSeeder::class,
             ServiceTaxSeeder::class,
-            ReservationsSeeder::class
+            ReservationsSeeder::class,
+            ExtrasAndReservationsSeeder::class
         ];
         $this->call([
             ...$user_seeder,

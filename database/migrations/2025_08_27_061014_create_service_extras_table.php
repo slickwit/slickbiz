@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('service_extras', function (Blueprint $table) {
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
             $table->foreignId('extras_group_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_required')->default(false);
+            $table->integer('max_selectable')->nullable();
             $table->primary(['service_id', 'extras_group_id']);
             $table->timestamps();
         });

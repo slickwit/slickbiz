@@ -2,102 +2,69 @@
 
 namespace Database\Seeders;
 
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class PricesSeeder extends Seeder
 {
+    public \Faker\Generator $faker;
+    
+    public function __construct() {
+        $this->faker = \Faker\Factory::create();
+    }
+    
     public function run()
     {
-        // Get pricing models
-        $hourlyModel = DB::table('pricing_models')->where('name', 'Per Hour')->first();
-        $dailyModel = DB::table('pricing_models')->where('name', 'Per Day')->first();
-        $fixedModel = DB::table('pricing_models')->where('name', 'Fixed Rate')->first();
-        $personModel = DB::table('pricing_models')->where('name', 'Per Person')->first();
+        // Get a user to associate with
+        $user = DB::table('users')->first();
+        $services = DB::table('services')->get();
 
-        // Get services
-        $recordingStudio = DB::table('services')->where('name', 'Recording Studio A')->first();
-        $photoStudio = DB::table('services')->where('name', 'Photo Studio B')->first();
-        $conferenceRoom = DB::table('services')->where('name', 'Conference Room C')->first();
+        $prices = [];
 
-        $prices = [
-            // Recording Studio - Hourly
-            [
-                'service_id' => $recordingStudio->id,
-                'pricing_model_id' => $hourlyModel->id,
-                'amount' => 80.00,
-                'min_amount' => 40.00, // minimum 30 min charge
-                'max_amount' => null,
-                'min_quantity' => 1,
-                'max_quantity' => 24, // max 24 hours
-                'valid_from' => null,
-                'valid_until' => null,
+        foreach ($services as $service) {
+            $category = DB::table('categories')->where('id', $service->category_id)->first();
+            $priceConfig = $this->getPriceConfig($category->name ?? 'default');
+            
+            $prices[] = [
+                'user_id' => $user->id,
+                'service_id' => $service->id,
+                'name' => 'Standard Rate',
+                'amount' => $priceConfig['amount'],
+                'type' => $priceConfig['type'],
+                'is_default' => true,
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            // Recording Studio - Daily
-            [
-                'service_id' => $recordingStudio->id,
-                'pricing_model_id' => $dailyModel->id,
-                'amount' => 500.00,
-                'min_amount' => null,
-                'max_amount' => null,
-                'min_quantity' => 1,
-                'max_quantity' => 7, // max 7 days
-                'valid_from' => null,
-                'valid_until' => null,
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Photo Studio - Hourly
-            [
-                'service_id' => $photoStudio->id,
-                'pricing_model_id' => $hourlyModel->id,
-                'amount' => 60.00,
-                'min_amount' => 30.00,
-                'max_amount' => null,
-                'min_quantity' => 1,
-                'max_quantity' => 12,
-                'valid_from' => null,
-                'valid_until' => null,
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Photo Studio - Per Person
-            [
-                'service_id' => $photoStudio->id,
-                'pricing_model_id' => $personModel->id,
-                'amount' => 10.00, // $10 per additional person
-                'min_amount' => null,
-                'max_amount' => null,
-                'min_quantity' => 1,
-                'max_quantity' => 5, // max 5 additional people
-                'valid_from' => null,
-                'valid_until' => null,
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            // Conference Room - Fixed Rate
-            [
-                'service_id' => $conferenceRoom->id,
-                'pricing_model_id' => $fixedModel->id,
-                'amount' => 200.00,
-                'min_amount' => null,
-                'max_amount' => null,
-                'min_quantity' => 1,
-                'max_quantity' => 1,
-                'valid_from' => null,
-                'valid_until' => null,
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ];
+            ];
+
+            // Add a discounted price for some services
+            if ($this->faker->boolean(30)) {
+                $prices[] = [
+                    'user_id' => $user->id,
+                    'service_id' => $service->id,
+                    'name' => 'Off-Peak Discount',
+                    'amount' => $priceConfig['amount'] * 0.8, // 20% discount
+                    'type' => $priceConfig['type'],
+                    'is_default' => false,
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
 
         DB::table('prices')->insert($prices);
+    }
+
+    protected function getPriceConfig(string $categoryName): array
+    {
+        return match($categoryName) {
+            'Studios' => ['type' => 'hourly', 'amount' => 80.00],
+            'Meeting Rooms' => ['type' => 'hourly', 'amount' => 60.00],
+            'Equipment' => ['type' => 'hourly', 'amount' => 25.00],
+            'Appointments' => ['type' => 'fixed', 'amount' => 100.00],
+            default => ['type' => 'fixed', 'amount' => 75.00],
+        };
     }
 }

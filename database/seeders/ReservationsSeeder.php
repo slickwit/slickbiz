@@ -8,142 +8,141 @@ use Carbon\Carbon;
 
 class ReservationsSeeder extends Seeder
 {
+    public \Faker\Generator $faker;
+    
+    public function __construct() {
+        $this->faker = \Faker\Factory::create();
+    }
+
     public function run()
     {
-        $faker = \Faker\Factory::create();
-        // Get sample data
+        $user = DB::table('users')->first();
         $customer = DB::table('users')->where('role', 'customer')->first();
-        $employee = DB::table('users')->where('role', 'employees')->first();
         $services = DB::table('services')->get();
-        $extrasItems = DB::table('extras_items')->get();
 
-        if (!$customer || !$employee || $services->isEmpty()) {
+        if (!$customer || $services->isEmpty()) {
             $this->command->info('Skipping reservations seeder - missing required data');
             return;
         }
 
-        $reservations = [];
-        $reservationExtras = [];
         $statuses = ['pending', 'confirmed', 'checked_in', 'completed', 'cancelled'];
         $sources = ['website', 'phone', 'in_person'];
 
-        // Create reservations for the next 30 days
         for ($i = 0; $i < 20; $i++) {
             $service = $services->random();
-            $startDate = Carbon::today()->addDays($faker->numberBetween(1, 30));
+            $startDate = Carbon::today()->addDays($this->faker->numberBetween(1, 30));
             
+            $price = DB::table('prices')->where('service_id', $service->id)->where('is_default', true)->first();
+            $serviceTaxes = DB::table('service_taxes')
+                ->join('taxes', 'service_taxes.tax_id', '=', 'taxes.id')
+                ->where('service_taxes.service_id', $service->id)
+                ->where('taxes.is_active', true)
+                ->get();
+
+            if (!$price) continue;
+
             // Adjust time based on service type
-            if (in_array($service->type, ['studio', 'room'])) {
-                $startTime = Carbon::createFromTime($faker->numberBetween(9, 16), 0, 0); // 9AM-4PM
-                $durationHours = $faker->numberBetween(1, 8);
-            } else {
-                $startTime = Carbon::createFromTime($faker->numberBetween(8, 20), 0, 0); // 8AM-8PM
-                $durationHours = $faker->numberBetween(1, 4);
-            }
+            $startTime = Carbon::createFromTime($this->faker->numberBetween(9, 16), 0, 0);
+            $durationHours = $this->faker->numberBetween(1, 8);
 
             $startDateTime = $startDate->copy()->setTime($startTime->hour, 0);
             $endDateTime = $startDateTime->copy()->addHours($durationHours);
             
-            $guestsCount = $faker->numberBetween(1, $service->max_capacity);
-            $unitsReserved = $faker->numberBetween(1, 2);
-            
-            $status = $statuses[array_rand($statuses)];
-            $source = $sources[array_rand($sources)];
+            $guestsCount = $this->faker->numberBetween(1, $service->max_capacity);
+            $status = $this->faker->randomElement($statuses);
+            $source = $this->faker->randomElement($sources);
 
             $reservationNumber = 'RES-' . date('Ymd') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT);
 
-            // Calculate price (simplified for seeder)
-            $basePrice = $this->calculateSamplePrice($service, $durationHours, $guestsCount, $unitsReserved);
-            $taxAmount = $basePrice * 0.1; // Simple 10% tax
-            $totalPrice = $basePrice + $taxAmount;
-            $reservationId = $i + 1;
+            // Calculate prices
+            $serviceBasePrice = $this->calculateServicePrice($price, $durationHours, $guestsCount);
+            $serviceTaxAmount = $this->calculateTaxAmount($serviceTaxes, $serviceBasePrice);
+            
+            // Build applied_taxes JSON
+            $appliedTaxes = [];
+            foreach ($serviceTaxes as $tax) {
+                if ($tax->is_default) {
+                    $appliedTaxes[] = [
+                        'tax_id' => $tax->id,
+                        'name' => $tax->name,
+                        'rate' => $tax->rate,
+                        'type' => $tax->type,
+                        'is_compound' => $tax->is_compound,
+                        'amount' => $tax->type === 'percentage' 
+                            ? $serviceBasePrice * ($tax->rate / 100)
+                            : $tax->rate
+                    ];
+                }
+            }
 
-            $reservations[] = [
-                'id' => $reservationId,
+            DB::table('reservations')->insertGetId([
+                'user_id' => $user->id,
                 'reservation_number' => $reservationNumber,
                 'customer_id' => $customer->id,
                 'service_id' => $service->id,
-                'assigned_employee_id' => $employee->id,
+                'price_id' => $price->id,
+                'applied_taxes' => json_encode(['taxes' => $appliedTaxes]),
                 'start_datetime' => $startDateTime,
                 'end_datetime' => $endDateTime,
                 'timezone' => 'UTC',
                 'guests_count' => $guestsCount,
-                'units_reserved' => $unitsReserved,
+                'units_reserved' => 1,
                 'status' => $status,
-                'cancellation_reason' => $status === 'cancelled' ? 'Sample cancellation reason' : null,
+                'cancellation_reason' => $status === 'cancelled' ? $this->faker->sentence() : null,
                 'source' => $source,
-                'special_requests' => $faker->numberBetween(0, 1) ? 'Sample special request' : null,
-                'base_price' => $basePrice,
-                'tax_amount' => $taxAmount,
-                'total_price' => $totalPrice,
+                'special_requests' => $this->faker->boolean(30) ? $this->faker->sentence() : null,
+                'base_price' => $serviceBasePrice,
+                'tax_amount' => $serviceTaxAmount,
+                'total_price' => $serviceBasePrice + $serviceTaxAmount,
                 'price_breakdown' => json_encode([
-                    'base' => $basePrice,
-                    'tax_rate' => '10%',
-                    'calculation' => "{$durationHours}h × {$guestsCount} guests × {$unitsReserved} units"
+                    'service' => [
+                        'base' => $serviceBasePrice,
+                        'taxes' => $serviceTaxAmount,
+                        'calculation' => $this->getPriceCalculation($price, $durationHours, $guestsCount)
+                    ]
                 ]),
-                'confirmed_at' => in_array($status, ['confirmed', 'checked_in', 'completed']) ? now() : null,
-                'cancelled_at' => $status === 'cancelled' ? now() : null,
-                'checked_in_at' => in_array($status, ['checked_in', 'completed']) ? now() : null,
-                'completed_at' => $status === 'completed' ? now() : null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-
-            // Add extras to some reservations
-            if ($extrasItems->isNotEmpty() && $faker->numberBetween(0, 1)) {
-                $extrasCount = $faker->numberBetween(1, min(3, $extrasItems->count()));
-                $selectedExtras = $extrasItems->random($extrasCount);
-                
-                foreach ($selectedExtras as $extra) {
-                    $quantity = $faker->numberBetween(1, $extra->max_quantity ?: 2);
-                    $unitPrice = $extra->price;
-                    $totalExtraPrice = $unitPrice * $quantity;
-                    
-                    $reservationExtras[] = [
-                        'reservation_id' => $reservationId,
-                        'extras_item_id' => $extra->id,
-                        'quantity' => $quantity,
-                        'unit_price' => $unitPrice,
-                        'total_price' => $totalExtraPrice,
-                        'price_breakdown' => json_encode([
-                            'item' => $extra->name,
-                            'quantity' => $quantity,
-                            'unit_price' => $unitPrice
-                        ]),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                }
-            }
+                'confirmed_at' => in_array($status, ['confirmed', 'checked_in', 'completed']) ? $this->faker->dateTimeBetween('-1 year', 'now') : null,
+                'cancelled_at' => $status === 'cancelled' ? $this->faker->dateTimeBetween('-1 year', 'now') : null,
+                'checked_in_at' => in_array($status, ['checked_in', 'completed']) ? $this->faker->dateTimeBetween('-1 year', 'now') : null,
+                'completed_at' => $status === 'completed' ? $this->faker->dateTimeBetween('-1 year', 'now') : null,
+                'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+                'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            ]);
         }
 
-        // Insert reservations
-        DB::table('reservations')->insert($reservations);
-
-        // Insert reservation extras if any
-        if (!empty($reservationExtras)) {
-            DB::table('reservation_extras')->insert($reservationExtras);
-        }
-
-        $this->command->info('Created ' . count($reservations) . ' sample reservations');
-        if (!empty($reservationExtras)) {
-            $this->command->info('Created ' . count($reservationExtras) . ' reservation extras');
-        }
+        $this->command->info('Created 20 sample reservations');
     }
 
-    /**
-     * Calculate sample price for seeder purposes
-     */
-    protected function calculateSamplePrice($service, $durationHours, $guestsCount, $unitsReserved): float
+    protected function calculateServicePrice($price, $durationHours, $guestsCount): float
     {
-        // Simple calculation for seeder - real app would use PricingService
-        $baseRate = match($service->type) {
-            'studio' => 50.00,
-            'room' => 75.00,
-            'equipment' => 25.00,
-            default => 40.00
+        return match($price->type) {
+            'hourly' => $price->amount * $durationHours,
+            'daily' => $price->amount * ceil($durationHours / 24),
+            'per_person' => $price->amount * $guestsCount,
+            default => $price->amount
         };
+    }
 
-        return ($baseRate * $durationHours * $guestsCount * $unitsReserved);
+    protected function calculateTaxAmount($taxes, $baseAmount): float
+    {
+        $totalTax = 0;
+        foreach ($taxes as $tax) {
+            if ($tax->is_default) {
+                $totalTax += $tax->type === 'percentage' 
+                    ? $baseAmount * ($tax->rate / 100)
+                    : $tax->rate;
+            }
+        }
+        return round($totalTax, 2);
+    }
+
+    protected function getPriceCalculation($price, $durationHours, $guestsCount): string
+    {
+        return match($price->type) {
+            'hourly' => "{$price->amount}/hour × {$durationHours} hours",
+            'daily' => "{$price->amount}/day × " . ceil($durationHours / 24) . " days",
+            'per_person' => "{$price->amount}/person × {$guestsCount} guests",
+            default => "Fixed rate: {$price->amount}"
+        };
     }
 }

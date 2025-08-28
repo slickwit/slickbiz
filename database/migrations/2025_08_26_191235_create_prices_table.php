@@ -12,21 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prices', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
-            $table->foreignId('pricing_model_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 10, 2); // base price
-            $table->decimal('min_amount', 10, 2)->nullable(); // minimum charge
-            $table->decimal('max_amount', 10, 2)->nullable(); // maximum charge
-            $table->integer('min_quantity')->default(1); // minimum units
-            $table->integer('max_quantity')->nullable(); // maximum units
-            $table->date('valid_from')->nullable();
-            $table->date('valid_until')->nullable();
+            $table->string("name");
+            $table->decimal('amount', 10, 2);
+            $table->enum('type', ['fixed', 'hourly', 'daily', 'per_person'])->default('fixed');
+            $table->boolean('is_default')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->unique(['service_id', 'pricing_model_id', 'valid_from'], 'price_unique_index');
         });
     }
 

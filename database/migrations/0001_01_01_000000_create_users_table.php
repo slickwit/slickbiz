@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['customer', 'employees', 'admin', 'super_admin']);
+            $table->enum('role', ['customer', 'employee', 'admin', 'super_admin']);
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
