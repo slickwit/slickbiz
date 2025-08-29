@@ -121,7 +121,7 @@ export function useServiceColumnDef(): ColumnDef<Service>[] {
                 cell: ({ row }) => <span className="capitalize">{row.original.max_capacity}</span>,
             },
             {
-                accessorKey: 'default_price.amount',
+                accessorKey: 'prices.amount',
                 enableHiding: true,
                 header: ({ column }) => {
                     const isSorted = column.getIsSorted() === 'asc';
@@ -141,10 +141,10 @@ export function useServiceColumnDef(): ColumnDef<Service>[] {
                     );
                 },
                 cell: ({ row }) => {
-                    if (!row.original.default_price) return <span>Price is not set</span>;
-                    let priceLabel = `${config.currency_symbol} ${row.original.default_price.amount}/${row.original.default_price.type}`;
-                    if (row.original.default_price.type === 'fixed') {
-                        priceLabel = `${config.currency_symbol} ${row.original.default_price.amount} fixed`;
+                    if (!row.original.price) return <span>Price is not set</span>;
+                    let priceLabel = `${config.currency_symbol} ${row.original.price.amount}/${row.original.price.type}`;
+                    if (row.original.price.type === 'fixed') {
+                        priceLabel = `${config.currency_symbol} ${row.original.price.amount} fixed`;
                     }
                     return priceLabel;
                 },

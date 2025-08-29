@@ -9,14 +9,15 @@ class ExtrasSeeder extends Seeder
 {
     public function run()
     {
+        $faker = \Faker\Factory::create();
         // Create extras groups
         $amenitiesGroup = DB::table('extras_groups')->insertGetId([
             'name' => 'Amenities',
             'slug' => 'amenities',
             'description' => 'Additional amenities for your stay',
             'is_active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
         ]);
 
         $servicesGroup = DB::table('extras_groups')->insertGetId([
@@ -24,8 +25,8 @@ class ExtrasSeeder extends Seeder
             'slug' => 'additional-services',
             'description' => 'Extra services to enhance your experience',
             'is_active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
         ]);
 
         // Create extras items
@@ -38,8 +39,8 @@ class ExtrasSeeder extends Seeder
                 'price_type' => 'per_person',
                 'max_quantity' => 10,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
+                'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ],
             [
                 'extras_group_id' => $amenitiesGroup,
@@ -49,8 +50,8 @@ class ExtrasSeeder extends Seeder
                 'price_type' => 'fixed',
                 'max_quantity' => 1,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
+                'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ],
             [
                 'extras_group_id' => $servicesGroup,
@@ -60,8 +61,8 @@ class ExtrasSeeder extends Seeder
                 'price_type' => 'per_hour',
                 'max_quantity' => 5,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
+                'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ],
         ];
 

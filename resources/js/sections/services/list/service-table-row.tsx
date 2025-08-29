@@ -39,7 +39,10 @@ export default function ServiceTableRow({ row }: ServiceTableRowProps) {
                                         <span className="font-medium">Description:</span> {row.original.description || 'No description'}
                                     </p>
                                     <p>
-                                        <span className="font-medium">Capacity:</span> {row.original.max_capacity} people
+                                        <span className="font-medium">Min Capacity:</span> {row.original.min_capacity} people
+                                    </p>
+                                    <p>
+                                        <span className="font-medium">Max Capacity:</span> {row.original.max_capacity} people
                                     </p>
                                     <p>
                                         <span className="font-medium">Status:</span>
@@ -53,27 +56,32 @@ export default function ServiceTableRow({ row }: ServiceTableRowProps) {
                             {/* Pricing */}
                             <div>
                                 <h4 className="mb-2 font-semibold">Pricing</h4>
-                                {row.original.default_price ? (
+                                {row.original.price ? (
                                     <div className="space-y-1 text-sm">
                                         <p>
-                                            <span className="font-medium">Default Price:</span> ${row.original.default_price.amount}
+                                            <span className="font-medium">Default Price:</span> ${row.original.price.amount}
                                         </p>
                                         <p>
-                                            <span className="font-medium">Type:</span> {row.original.default_price.type}
-                                        </p>
-                                        <p>
-                                            <span className="font-medium">Status:</span>
-                                            <Label
-                                                variant="ghost"
-                                                color={row.original.default_price.is_active ? 'success' : 'error'}
-                                                className="ml-2"
-                                            >
-                                                {row.original.default_price.is_active ? 'Active' : 'Inactive'}
-                                            </Label>
+                                            <span className="font-medium">Type:</span> {row.original.price.type}
                                         </p>
                                     </div>
                                 ) : (
                                     <p className="text-muted-foreground">No default price set</p>
+                                )}
+                                {row.original.conditional_pricings && row.original.conditional_pricings.length && (
+                                    <>
+                                        <h4 className="mt-2 font-semibold">Condition Prices</h4>
+                                        {row.original.conditional_pricings?.map((price) => (
+                                            <div className="space-y-1 text-sm">
+                                                <p>
+                                                    <span className="font-medium">Default Price:</span> ${price.amount}
+                                                </p>
+                                                <p>
+                                                    <span className="font-medium">Type:</span> {price.type}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </>
                                 )}
                             </div>
 

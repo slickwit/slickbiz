@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Service extends Model
 {
@@ -19,6 +20,7 @@ class Service extends Model
         'name',
         'slug',
         'description',
+        'min_capacity',
         'max_capacity',
         'features',
         'is_active',
@@ -40,9 +42,41 @@ class Service extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function prices(): HasMany
+    public function price(): HasOne
     {
-        return $this->hasMany(Price::class);
+        return $this->hasOne(Price::class);
+    }
+
+    public function conditionalPricings(): HasMany
+    {
+        return $this->hasMany(ConditionalPricing::class);
+    }
+
+    public function getPriceForDuration(?int $duration = null): float
+    {
+        $mainPrice = $this->price;
+        
+        // For fixed/per_person, always use main amount
+        if (in_array($mainPrice->type, ['fixed', 'per_person'])) {
+            return $mainPrice->amount;
+        }
+
+        // For hourly/daily with specific duration
+        if ($duration) {
+            $conditionalPrice = $this->conditionalPricings()
+                ->where('duration', $duration)
+                ->first();
+            
+            if ($conditionalPrice) {
+                return $conditionalPrice->amount;
+            }
+            
+            // Fallback: main amount * duration
+            return $mainPrice->amount * $duration;
+        }
+
+        // No duration specified, return main amount
+        return $mainPrice->amount;
     }
 
     public function taxes(): BelongsToMany
@@ -58,10 +92,5 @@ class Service extends Model
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
-    }
-
-    public function defaultPrice()
-    {
-        return $this->hasOne(Price::class)->where('is_default', true);
     }
 }

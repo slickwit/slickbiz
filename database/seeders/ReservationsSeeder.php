@@ -32,7 +32,7 @@ class ReservationsSeeder extends Seeder
             $service = $services->random();
             $startDate = Carbon::today()->addDays($this->faker->numberBetween(1, 30));
             
-            $price = DB::table('prices')->where('service_id', $service->id)->where('is_default', true)->first();
+            $price = DB::table('prices')->where('service_id', $service->id)->first();
             $serviceTaxes = DB::table('service_taxes')
                 ->join('taxes', 'service_taxes.tax_id', '=', 'taxes.id')
                 ->where('service_taxes.service_id', $service->id)

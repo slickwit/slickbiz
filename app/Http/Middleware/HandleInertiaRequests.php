@@ -43,6 +43,9 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'config' => [
+                'currency_symbol' => '$'
+            ],
             'auth' => [
                 'user' => $request->user()?->load("profile"),
             ],

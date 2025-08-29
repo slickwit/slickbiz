@@ -106,12 +106,12 @@ export const useNavData = (user?: User) => {
                         icon: ICONS.services,
                         children: [
                             {
-                                title: 'new',
+                                title: 'create',
                                 path: route(paths.dashboard.services.create),
                                 name: paths.dashboard.services.create,
                             },
                             {
-                                title: 'list',
+                                title: 'services',
                                 path: route(paths.dashboard.services.root),
                                 name: paths.dashboard.services.root,
                             },

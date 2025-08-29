@@ -4,28 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Price extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
         'service_id',
-        'name',
         'amount',
-        'type',
-        'is_default',
-        'is_active',
+        'type'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'is_default' => 'boolean',
-        'is_active' => 'boolean',
     ];
 
     // Relationships
@@ -34,7 +28,7 @@ class Price extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function service(): BelongsTo
+    public function services(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }

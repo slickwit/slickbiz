@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->integer('max_capacity');
+            $table->integer('min_capacity')->default(1);
+            $table->integer('max_capacity')->default(1);
             $table->json('features')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

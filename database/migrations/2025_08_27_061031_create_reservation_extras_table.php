@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservation_extras', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
             $table->foreignId('extras_item_id')->constrained()->onDelete('cascade');
             $table->json('applied_taxes')->nullable();

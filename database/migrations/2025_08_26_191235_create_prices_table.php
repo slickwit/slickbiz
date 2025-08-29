@@ -13,15 +13,24 @@ return new class extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->nullOnDelete();
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
-            $table->string("name");
             $table->decimal('amount', 10, 2);
             $table->enum('type', ['fixed', 'hourly', 'daily', 'per_person'])->default('fixed');
-            $table->boolean('is_default')->default(false);
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer("duration")->nullable()->comment('Duration in hours for hourly, days for daily');
+            $table->integer('buffer_time_before')->nullable()->comment('Buffer in minutes before booking');
+            $table->integer('buffer_time_after')->nullable()->comment('Buffer in minutes after booking');
+        });
+
+        Schema::create('conditional_pricings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->nullOnDelete();
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->integer('duration')->comment('Duration in hours for hourly, days for daily');
+            $table->enum('type', ['hourly', 'daily']);
+            $table->decimal('amount', 10, 2);
+            
+            $table->unique(['service_id', 'duration']);
         });
     }
 
