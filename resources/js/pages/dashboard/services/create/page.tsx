@@ -1,13 +1,10 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Button } from '@/components/ui/buttons/button';
 import Container from '@/components/ui/container';
 import AppLayout from '@/layouts/app-layout';
 import { paths } from '@/layouts/dashboard/configs/paths';
-import ServiceListView from '@/sections/services/list/service-list';
 import { PaginateResponse, type BreadcrumbItem } from '@/types';
-import type { Service } from '@/types/service-management.type';
-import { Head, Link } from '@inertiajs/react';
-import { PlusIcon } from 'lucide-react';
+import { Service } from '@/types/service-management.type';
+import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,14 +15,18 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Services',
         href: route(paths.dashboard.services.root),
     },
+    {
+        title: 'New Service',
+        href: route(paths.dashboard.services.create),
+    },
 ];
 
 interface ServicesProps {
     services: PaginateResponse<Service>;
 }
 
-export default function Services({ services }: ServicesProps) {
-    console.log(services);
+export default function Services(props: ServicesProps) {
+    console.log(props);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -33,16 +34,10 @@ export default function Services({ services }: ServicesProps) {
             <Container className="mt-16 lg:mt-24" maxWidth="xl">
                 <div className="mb-8 flex items-center justify-between lg:mb-12">
                     <div>
-                        <h4 className="text-md mb-2 font-bold text-slate-800 lg:text-lg xl:text-2xl dark:text-slate-200">List</h4>
+                        <h4 className="text-md mb-2 font-bold text-slate-800 lg:text-lg xl:text-2xl dark:text-slate-200">New a new service</h4>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                     </div>
-                    <Link href={route(paths.dashboard.services.create)}>
-                        <Button asChild variant="filled" color="primary" startIcon={<PlusIcon />} className="gap-0">
-                            New Service
-                        </Button>
-                    </Link>
                 </div>
-                <ServiceListView services={services.data} />
             </Container>
         </AppLayout>
     );

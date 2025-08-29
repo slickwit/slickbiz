@@ -72,7 +72,7 @@ export default function ServiceTableRow({ row }: ServiceTableRowProps) {
                                     <>
                                         <h4 className="mt-2 font-semibold">Condition Prices</h4>
                                         {row.original.conditional_pricings?.map((price) => (
-                                            <div className="space-y-1 text-sm">
+                                            <div className="space-y-1 text-sm" key={price.id}>
                                                 <p>
                                                     <span className="font-medium">Default Price:</span> ${price.amount}
                                                 </p>
