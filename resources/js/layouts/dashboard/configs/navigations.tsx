@@ -31,6 +31,8 @@ const ICONS = {
     employee: icon('ci_employee'),
     training: icon('mc_certificate'),
     incident: icon('ion_accessibility'),
+
+    services: icon('services'),
 };
 
 // ----------------------------------------------------------------------
@@ -43,7 +45,7 @@ export type TMenuItem = {
     disabled?: boolean;
     caption?: string;
     children?: TMenuItem[] | undefined;
-    // routeNames:
+    name?: string;
 };
 
 export type INavData = {
@@ -57,38 +59,33 @@ export const useNavData = (user?: User) => {
             // GENERAL
             // ----------------------------------------------------------------------
             {
-                subheader: 'general',
+                subheader: 'overview',
                 items: [
                     {
-                        title: 'HSE dashboard',
+                        title: 'app',
                         path: paths.dashboard.root,
+                        icon: ICONS.dashboard,
+                    },
+                    {
+                        title: 'ecommerce',
+                        path: paths.dashboard.general.ecommerce,
+                        icon: ICONS.ecommerce,
+                    },
+                    {
+                        title: 'analytics',
+                        path: paths.dashboard.general.analytics,
                         icon: ICONS.analytics,
                     },
-                    // {
-                    // 	title: "app",
-                    // 	path: paths.dashboard.root,
-                    // 	icon: ICONS.dashboard,
-                    // },
-                    // {
-                    // 	title: "ecommerce",
-                    // 	path: paths.dashboard.general.ecommerce,
-                    // 	icon: ICONS.ecommerce,
-                    // },
-                    // {
-                    // 	title: "analytics",
-                    // 	path: paths.dashboard.general.analytics,
-                    // 	icon: ICONS.analytics,
-                    // },
-                    // {
-                    // 	title: "banking",
-                    // 	path: paths.dashboard.general.banking,
-                    // 	icon: ICONS.banking,
-                    // },
-                    // {
-                    // 	title: "booking",
-                    // 	path: paths.dashboard.general.booking,
-                    // 	icon: ICONS.booking,
-                    // },
+                    {
+                        title: 'banking',
+                        path: paths.dashboard.general.banking,
+                        icon: ICONS.banking,
+                    },
+                    {
+                        title: 'booking',
+                        path: paths.dashboard.general.booking,
+                        icon: ICONS.booking,
+                    },
                     {
                         title: 'file',
                         path: paths.dashboard.general.file,
@@ -100,8 +97,30 @@ export const useNavData = (user?: User) => {
             // HSE
             // ----------------------------------------------------------------------
             {
-                subheader: 'HSE',
+                subheader: 'management',
                 items: [
+                    // Service Management
+                    {
+                        title: 'service management',
+                        path: route(paths.dashboard.services.root),
+                        icon: ICONS.services,
+                        children: [
+                            {
+                                title: 'new',
+                                path: route(paths.dashboard.services.create),
+                                name: paths.dashboard.services.create,
+                            },
+                            {
+                                title: 'list',
+                                path: route(paths.dashboard.services.root),
+                                name: paths.dashboard.services.root,
+                            },
+                            { title: 'pricing', path: '' },
+                            { title: 'tax settings', path: '' },
+                            { title: 'add-ons', path: '' },
+                            { title: 'availability', path: '' },
+                        ],
+                    },
                     // COMPANY INFORMATION
                     {
                         title: 'control panel',
@@ -124,7 +143,8 @@ export const useNavData = (user?: User) => {
                             { title: 'create', path: paths.dashboard.user.create },
                             {
                                 title: 'profile',
-                                path: user ? paths.dashboard.user.profile(user.username) : paths.dashboard.user.defaultProfile,
+                                // path: user ? paths.dashboard.user.profile(user.username) : paths.dashboard.user.defaultProfile,
+                                path: '',
                             },
                             // { title: "cards", path: paths.dashboard.user.cards },
                             { title: 'list', path: paths.dashboard.user.list },

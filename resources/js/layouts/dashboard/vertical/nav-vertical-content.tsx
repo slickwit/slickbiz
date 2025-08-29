@@ -14,8 +14,8 @@ interface NavVerticalContentProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function NavVerticalContent({ className, navData, ...props }: NavVerticalContentProps) {
     return (
-        <div className={cn('h-full w-full', className)} {...props}>
-            <ScrollArea className="flex h-full flex-col [&>div>div]:!block">
+        <div className={cn('h-full w-full', className)} {...props} scroll-region="">
+            <ScrollArea className="flex h-full flex-col [&>div>div]:!block" scroll-region="">
                 {/* {!noUser && <NavAccount />} */}
                 <NavSectionVertical navData={navData} />
                 <div className="flex-grow" />

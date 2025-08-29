@@ -64,7 +64,7 @@ const FloatingLabelButon = React.forwardRef<HTMLButtonElement, FloatingLabelButo
                 >
                     {label}
                 </span>
-                {value ? <span className="text-left">{value}</span> : <span className="w-full" />}
+                {value ? <span className="overflow-hidden text-left text-ellipsis">{value}</span> : <span className="w-full" />}
                 {!!endIcon && <span className="ml-auto flex-shrink-0">{endIcon}</span>}
                 <fieldset
                     className={cn(

@@ -76,7 +76,7 @@ export default function NavItem(props: TProps) {
                 'cursor-default opacity-50': disabled,
                 '[&_*]:font-semibold': active,
                 'bg-primary/[0.08] hover:!bg-primary/[0.08] [&_*]:!text-primary': active && !isChild,
-                '[&_*]:!text-accent-foreground': active && isChild,
+                // '[&_*]:!text-accent-foreground': active && isChild,
             })}
         >
             {icon ? (
@@ -93,7 +93,13 @@ export default function NavItem(props: TProps) {
             )}
 
             <span className="min-w-0 flex-auto">
-                <span className="block w-full overflow-hidden text-start text-sm font-medium text-ellipsis capitalize">{title}</span>
+                <span
+                    className={cn('block w-full overflow-hidden text-start text-sm font-medium text-ellipsis capitalize', {
+                        'text-primary': active,
+                    })}
+                >
+                    {title}
+                </span>
                 {caption && (
                     <span className="block max-w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap text-muted-foreground/60">
                         {caption}

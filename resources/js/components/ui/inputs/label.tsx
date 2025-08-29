@@ -147,5 +147,5 @@ const labelVariant = cva(
 interface LabelProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>, VariantProps<typeof labelVariant> {}
 
 export default function Label({ children, className, variant, color }: LabelProps) {
-    return <div className={cn(labelVariant({ variant, color, className }))}>{children}</div>;
+    return <label className={cn(labelVariant({ variant, color, className }))}>{children}</label>;
 }

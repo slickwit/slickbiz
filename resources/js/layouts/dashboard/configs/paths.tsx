@@ -25,6 +25,15 @@ export const paths = {
             booking: `${ROOTS.DASHBOARD}/booking`,
             file: `${ROOTS.DASHBOARD}/file`,
         },
+        services: {
+            root: 'dashboard.services.index',
+            create: 'dashboard.services.create',
+            store: 'dashboard.services.store',
+            show: 'dashboard.services.show',
+            edit: 'dashboard.services.edit',
+            update: 'dashboard.services.update',
+            destroy: 'dashboard.services.destroy',
+        },
         controlPannel: {
             root: `${ROOTS.DASHBOARD}/control-pannel`,
             projectDetails: `${ROOTS.DASHBOARD}/control-pannel/project-details`,

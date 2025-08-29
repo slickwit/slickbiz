@@ -4,11 +4,13 @@ import {
     type Column,
     type ColumnDef,
     type ColumnFiltersState,
+    type ExpandedState,
     type Row,
     type SortingState,
     type Table,
     type VisibilityState,
     getCoreRowModel,
+    getExpandedRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -48,6 +50,7 @@ export function useTable<TData>({ data, columns, initialState = {} }: UseTableOp
     const [density, setDensity] = useState<DensityState>('md');
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [expanded, setExpanded] = useState<ExpandedState>({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [tableData, setTableData] = useState<TData[]>(data);
@@ -65,12 +68,16 @@ export function useTable<TData>({ data, columns, initialState = {} }: UseTableOp
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         onDensityChange: setDensity,
+        getExpandedRowModel: getExpandedRowModel(),
+        onExpandedChange: setExpanded,
+        getRowCanExpand: () => true,
         state: {
             density,
             sorting,
             columnFilters,
             columnVisibility,
             rowSelection,
+            expanded,
         },
         initialState: {
             pagination: {

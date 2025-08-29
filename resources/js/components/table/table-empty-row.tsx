@@ -14,7 +14,10 @@ export default function CustomTableEmptyRow({ dataLength, pageSize = 5 }: Custom
     if (remainingRows === pageSize) return null;
 
     return Array.from(Array(remainingRows).keys()).map((i, idx) => (
-        <TableRow key={i} className="pointer-events-none border-none">
+        <TableRow
+            key={i}
+            className="pointer-events-none h-14 border-dashed transition-[height] group-data-[dense=md]:h-12 group-data-[dense=sm]:h-10"
+        >
             <TableCell key={idx} colSpan={12}></TableCell>
         </TableRow>
     ));
